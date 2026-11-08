@@ -76,7 +76,7 @@ class Workshop:
         self.timeline.append(item)
         self.save("timeline", self.timeline)
 
-    def screenshot(self, name, url, text=None):
+    def screenshot(self, name, url, text=None, require_canvas=False):
         self.browser_errors.clear()
         try:
             response = self.page.goto(url, wait_until="domcontentloaded", timeout=60000)
@@ -86,6 +86,17 @@ class Workshop:
                 element = self.page.get_by_text(text, exact=False).first
                 element.wait_for(timeout=45000)
                 element.scroll_into_view_if_needed()
+            if require_canvas:
+                self.page.wait_for_function("""() => {
+                  const canvases=Array.from(document.querySelectorAll('canvas'));
+                  return canvases.length === 9 && canvases.every(canvas => {
+                    if (!canvas.width || !canvas.height) return false;
+                    const pixels=canvas.getContext('2d').getImageData(0,0,canvas.width,canvas.height).data;
+                    let painted=0;
+                    for (let i=3;i<pixels.length;i+=4) if (pixels[i]) painted++;
+                    return painted>100;
+                  });
+                }""", timeout=30000)
             self.page.wait_for_timeout(2500)
         except Exception:
             (self.output / f"{name}-failed.html").write_text(self.page.content())
@@ -93,13 +104,15 @@ class Workshop:
             raise
         finally:
             self.save(f"{name}-browser", {"utc": now(), "url": self.page.url, "title": self.page.title(), "body_excerpt": self.page.locator("body").inner_text()[:2500], "errors": self.browser_errors})
-        self.page.screenshot(path=str(self.output / f"{name}.png"), full_page=True)
+        # Chromium puede omitir los canvas en capturas full_page aunque sus píxeles
+        # existan. El viewport fijo incluye los nueve paneles y conserva sus gráficos.
+        self.page.screenshot(path=str(self.output / f"{name}.png"), full_page=False)
         self.event("screenshot", name=name, url=url)
 
     def dashboard(self, name):
         # Usar la ruta canónica de Grafana, incluidos UID y slug.
         metadata = get_json(GRAFANA + "/api/dashboards/uid/tienda-observabilidad")["meta"]
-        self.screenshot(name, GRAFANA + metadata["url"] + "?from=now-10m&to=now&kiosk", "Inventario: peticiones por endpoint")
+        self.screenshot(name, GRAFANA + metadata["url"] + "?from=now-10m&to=now&kiosk", "Inventario: peticiones por endpoint", require_canvas=True)
 
     def canvas_diagnostics(self, name):
         result = self.page.evaluate("""() => ({
@@ -293,7 +306,7 @@ def main():
     args.output.mkdir(parents=True, exist_ok=True)
     with (args.output / "k6.log").open("w") as traffic_log, sync_playwright() as playwright:
         browser = playwright.chromium.launch()
-        page = browser.new_page(viewport={"width": 1800, "height": 1400}, device_scale_factor=1)
+        page = browser.new_page(viewport={"width": 1800, "height": 1900}, device_scale_factor=1)
         workshop = Workshop(args.output, page)
         # Esperar a que exista el contenedor evita la carrera entre pull, arranque y
         # limpieza. --no-deps conserva los procesos ya verificados por Compose.
@@ -308,7 +321,7 @@ def main():
                 workshop.canvas_diagnostics("default")
                 cpu_browser = playwright.chromium.launch(args=["--disable-gpu", "--disable-dev-shm-usage"])
                 try:
-                    cpu = Workshop(args.output / "cpu", cpu_browser.new_page(viewport={"width":1800,"height":1400}))
+                    cpu = Workshop(args.output / "cpu", cpu_browser.new_page(viewport={"width":1800,"height":1900}))
                     cpu.dashboard("dashboard-cpu")
                     cpu.canvas_diagnostics("cpu")
                 finally:

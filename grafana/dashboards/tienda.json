@@ -12,7 +12,7 @@
     "to": "now"
   },
   "schemaVersion": 41,
-  "version": 2,
+  "version": 3,
   "editable": true,
   "graphTooltip": 1,
   "annotations": {
@@ -138,7 +138,8 @@
                 "value": 0.05
               }
             ]
-          }
+          },
+          "max": 1
         },
         "overrides": []
       },

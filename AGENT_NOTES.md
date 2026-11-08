@@ -54,8 +54,15 @@ en `pkg/api/dashboard.go`, líneas 214-222, confirma que la bandera controla la 
 Se verifica ahora `provisionedExternalId` y el contenido del panel. Se corrigió además
 la carrera de limpieza con k6: su arranque se espera y usa `--no-deps`.
 
-Segundo intento, en progreso al escribir esta nota:
+Segundo intento:
 https://github.com/ItsN3M3515/DYAS-Monitoreo/actions/runs/42533717336
+
+Confirmó targets UP, resultados PromQL reales y el archivo/panel aprovisionado. Falló
+al esperar la captura de Grafana; las capturas previas resultaron completamente blancas
+y no se consideran evidencia válida. El siguiente intento actualiza Playwright de
+1.56.0 a la versión publicada 1.64.1, utiliza la URL canónica devuelta por Grafana y
+guarda errores de navegador/HTML si falla el renderizado. La causa de las páginas
+blancas todavía no se ha determinado; no atribuirla al navegador sin diagnóstico.
 
 El workflow inicia una VM nueva, levanta Compose con `--wait`, genera tráfico y recoge
 datos y capturas mediante `tools/workshop_evidence.py`. Restablece las fallas y apaga

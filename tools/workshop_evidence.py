@@ -62,6 +62,9 @@ class Workshop:
         self.output = output
         self.page = page
         self.timeline = []
+        self.browser_errors = []
+        page.on("pageerror", lambda error: self.browser_errors.append(str(error)))
+        page.on("requestfailed", lambda req: self.browser_errors.append(f"{req.url}: {req.failure}"))
         output.mkdir(parents=True, exist_ok=True)
 
     def save(self, name, value):
@@ -74,15 +77,29 @@ class Workshop:
         self.save("timeline", self.timeline)
 
     def screenshot(self, name, url, text=None):
-        self.page.goto(url, wait_until="domcontentloaded", timeout=60000)
-        if text:
-            self.page.get_by_text(text, exact=False).first.wait_for(timeout=45000)
-        self.page.wait_for_timeout(2500)
+        self.browser_errors.clear()
+        try:
+            response = self.page.goto(url, wait_until="domcontentloaded", timeout=60000)
+            assert response and response.ok, f"HTTP {response.status if response else 'sin respuesta'}: {url}"
+            self.page.wait_for_function("document.body && document.body.innerText.trim().length > 40", timeout=45000)
+            if text:
+                element = self.page.get_by_text(text, exact=False).first
+                element.wait_for(timeout=45000)
+                element.scroll_into_view_if_needed()
+            self.page.wait_for_timeout(2500)
+        except Exception:
+            (self.output / f"{name}-failed.html").write_text(self.page.content())
+            self.page.screenshot(path=str(self.output / f"{name}-failed.png"), full_page=True)
+            raise
+        finally:
+            self.save(f"{name}-browser", {"utc": now(), "url": self.page.url, "title": self.page.title(), "body_excerpt": self.page.locator("body").inner_text()[:2500], "errors": self.browser_errors})
         self.page.screenshot(path=str(self.output / f"{name}.png"), full_page=True)
         self.event("screenshot", name=name, url=url)
 
     def dashboard(self, name):
-        self.screenshot(name, GRAFANA + "/d/tienda-observabilidad?from=now-10m&to=now&kiosk", "Inventario: peticiones por endpoint")
+        # Usar la ruta canónica de Grafana, incluidos UID y slug.
+        metadata = get_json(GRAFANA + "/api/dashboards/uid/tienda-observabilidad")["meta"]
+        self.screenshot(name, GRAFANA + metadata["url"] + "?from=now-10m&to=now&kiosk", "Inventario: peticiones por endpoint")
 
     def faults(self, query=""):
         method = "POST" if query else "DELETE"
@@ -185,7 +202,7 @@ class Workshop:
         shop = [t for t in targets["data"]["activeTargets"] if t["labels"].get("job") == "tienda"]
         assert len(shop) == 2 and all(t["health"] == "up" for t in shop)
         self.save("targets", targets)
-        self.screenshot("targets-up", PROM + "/targets")
+        self.screenshot("targets-up", PROM + "/targets", "tienda")
         self.metrics("baseline", screenshots=True)
         self.dashboard("dashboard-baseline")
         self.save("alerts-baseline", self.alert_state())

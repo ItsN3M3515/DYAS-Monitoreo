@@ -1,0 +1,11 @@
+{
+  "utc": "2026-11-08T23:35:04.828823Z",
+  "query": "sum by (application) (rate(http_server_requests_seconds_count{uri!~\"/actuator.*\", status=~\"5..\"}[1m])) / sum by (application) (rate(http_server_requests_seconds_count{uri!~\"/actuator.*\"}[1m]))",
+  "response": {
+    "status": "success",
+    "data": {
+      "resultType": "vector",
+      "result": []
+    }
+  }
+}

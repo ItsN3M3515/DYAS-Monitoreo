@@ -1,0 +1,12 @@
+{
+  "utc": "2026-11-08T23:35:17.932774Z",
+  "status": 201,
+  "body": {
+    "id": 693,
+    "producto": "teclado",
+    "cantidad": 1,
+    "fecha": "2026-11-08T23:35:17.856902297Z"
+  },
+  "trace_id": "b12ab386b33ed1209b4e3b0d9d1186ee",
+  "confirmed_order_log": "pedidos-1  | 2026-11-08T23:35:17.856Z  INFO 1 --- [pedidos] [nio-8081-exec-5] [b12ab386b33ed1209b4e3b0d9d1186ee-edd58eafdbb662d7] e.u.dyas.tienda.pedidos.PedidoService    : Pedido 693 confirmado: 1 x teclado"
+}

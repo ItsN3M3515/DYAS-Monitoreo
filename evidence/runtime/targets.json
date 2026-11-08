@@ -1,0 +1,90 @@
+{
+  "status": "success",
+  "data": {
+    "activeTargets": [
+      {
+        "discoveredLabels": {
+          "__address__": "localhost:9090",
+          "__always_scrape_classic_histograms__": "false",
+          "__convert_classic_histograms_to_nhcb__": "false",
+          "__metrics_path__": "/metrics",
+          "__scheme__": "http",
+          "__scrape_interval__": "5s",
+          "__scrape_native_histograms__": "false",
+          "__scrape_timeout__": "5s",
+          "job": "prometheus"
+        },
+        "labels": {
+          "instance": "localhost:9090",
+          "job": "prometheus"
+        },
+        "scrapePool": "prometheus",
+        "scrapeUrl": "http://localhost:9090/metrics",
+        "globalUrl": "http://3d47ebbc9c8b:9090/metrics",
+        "lastError": "",
+        "lastScrape": "2026-11-08T23:34:58.515665126Z",
+        "lastScrapeDuration": 0.002535495,
+        "health": "up",
+        "scrapeInterval": "5s",
+        "scrapeTimeout": "5s"
+      },
+      {
+        "discoveredLabels": {
+          "__address__": "pedidos:8081",
+          "__always_scrape_classic_histograms__": "false",
+          "__convert_classic_histograms_to_nhcb__": "false",
+          "__metrics_path__": "/actuator/prometheus",
+          "__scheme__": "http",
+          "__scrape_interval__": "5s",
+          "__scrape_native_histograms__": "false",
+          "__scrape_timeout__": "5s",
+          "job": "tienda"
+        },
+        "labels": {
+          "instance": "pedidos:8081",
+          "job": "tienda"
+        },
+        "scrapePool": "tienda",
+        "scrapeUrl": "http://pedidos:8081/actuator/prometheus",
+        "globalUrl": "http://pedidos:8081/actuator/prometheus",
+        "lastError": "",
+        "lastScrape": "2026-11-08T23:34:58.424983625Z",
+        "lastScrapeDuration": 0.005257005,
+        "health": "up",
+        "scrapeInterval": "5s",
+        "scrapeTimeout": "5s"
+      },
+      {
+        "discoveredLabels": {
+          "__address__": "inventario:8082",
+          "__always_scrape_classic_histograms__": "false",
+          "__convert_classic_histograms_to_nhcb__": "false",
+          "__metrics_path__": "/actuator/prometheus",
+          "__scheme__": "http",
+          "__scrape_interval__": "5s",
+          "__scrape_native_histograms__": "false",
+          "__scrape_timeout__": "5s",
+          "job": "tienda"
+        },
+        "labels": {
+          "instance": "inventario:8082",
+          "job": "tienda"
+        },
+        "scrapePool": "tienda",
+        "scrapeUrl": "http://inventario:8082/actuator/prometheus",
+        "globalUrl": "http://inventario:8082/actuator/prometheus",
+        "lastError": "",
+        "lastScrape": "2026-11-08T23:34:57.619238417Z",
+        "lastScrapeDuration": 0.006633497,
+        "health": "up",
+        "scrapeInterval": "5s",
+        "scrapeTimeout": "5s"
+      }
+    ],
+    "droppedTargets": [],
+    "droppedTargetCounts": {
+      "prometheus": 0,
+      "tienda": 0
+    }
+  }
+}

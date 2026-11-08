@@ -1,0 +1,40 @@
+{
+  "TasaDeErroresAlta": {
+    "state": "inactive",
+    "name": "TasaDeErroresAlta",
+    "query": "sum by (application) (rate(http_server_requests_seconds_count{status=~\"5..\",uri!~\"/actuator.*\"}[1m])) / sum by (application) (rate(http_server_requests_seconds_count{uri!~\"/actuator.*\"}[1m])) > 0.05",
+    "duration": 30,
+    "keepFiringFor": 0,
+    "labels": {
+      "severidad": "critica"
+    },
+    "annotations": {
+      "descripcion": "{{ $value | humanizePercentage }} de las peticiones terminan en error 5xx (umbral: 5%).",
+      "resumen": "El servicio {{ $labels.application }} tiene una tasa de errores 5xx alta"
+    },
+    "alerts": [],
+    "health": "ok",
+    "evaluationTime": 0.000479433,
+    "lastEvaluation": "2026-11-08T23:35:13.511837563Z",
+    "type": "alerting"
+  },
+  "LatenciaP95Alta": {
+    "state": "inactive",
+    "name": "LatenciaP95Alta",
+    "query": "histogram_quantile(0.95, sum by (application, le) (rate(http_server_requests_seconds_bucket{uri!~\"/actuator.*\"}[1m]))) > 0.5",
+    "duration": 30,
+    "keepFiringFor": 0,
+    "labels": {
+      "severidad": "advertencia"
+    },
+    "annotations": {
+      "descripcion": "El p95 de la latencia es {{ $value | humanizeDuration }} (umbral: 500 ms).",
+      "resumen": "El servicio {{ $labels.application }} responde lento"
+    },
+    "alerts": [],
+    "health": "ok",
+    "evaluationTime": 0.001521992,
+    "lastEvaluation": "2026-11-08T23:35:13.512322894Z",
+    "type": "alerting"
+  }
+}

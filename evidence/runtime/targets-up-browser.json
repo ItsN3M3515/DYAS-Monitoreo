@@ -1,0 +1,7 @@
+{
+  "utc": "2026-11-08T23:35:01.980514Z",
+  "url": "http://localhost:9090/targets",
+  "title": "Prometheus Time Series Collection and Processing Server",
+  "body_excerpt": "Prometheus\n\nQuery\nAlerts\nStatus\nTarget health\nQuery\nAlerts\nStatus\nTarget health\n\nprometheus\n\nShow config\n\n1 / 1 up\n\nEndpoint\tLabels\tLast scrape\tState\n\nhttp://localhost:9090/metrics\n\t\ninstance=\"localhost:9090\"\njob=\"prometheus\"\n\t\n818ms ago\n2ms\n\t\nUP\n\ntienda\n\nShow config\n\n2 / 2 up\n\nEndpoint\tLabels\tLast scrape\tState\n\nhttp://pedidos:8081/actuator/prometheus\n\t\ninstance=\"pedidos:8081\"\njob=\"tienda\"\n\t\n912ms ago\n5ms\n\t\nUP\n\n\nhttp://inventario:8082/actuator/prometheus\n\t\ninstance=\"inventario:8082\"\njob=\"tienda\"\n\t\n1.718s ago\n6ms\n\t\nUP",
+  "errors": []
+}

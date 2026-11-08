@@ -1,0 +1,7 @@
+{
+  "utc": "2026-11-08T23:35:10.230431Z",
+  "url": "http://localhost:9090/query?g0.expr=histogram_quantile%280.95%2C+sum+by+%28application%2C+le%29+%28rate%28http_server_requests_seconds_bucket%7Buri%21~%22%2Factuator.%2A%22%7D%5B1m%5D%29%29%29&g0.tab=1",
+  "title": "Prometheus Time Series Collection and Processing Server",
+  "body_excerpt": "Prometheus\n\nQuery\nAlerts\nStatus\nQuery\nAlerts\nStatus\nhistogram_quantile(0.95, sum by (application, le) (rate(http_server_requests_seconds_bucket{uri!~\"/actuator.*\"}[1m])))\nExecute\nTable\nGraph\nExplain\nEvaluation time\n\nLoad time: 24ms   Result series: 2\n\n{application=\"inventario\"}\t0.0010000359462759463\n{application=\"pedidos\"}\t0.005261891290694178\nAdd query",
+  "errors": []
+}

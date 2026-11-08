@@ -13,7 +13,6 @@ import json
 import os
 from pathlib import Path
 import re
-import secrets
 import subprocess
 import time
 from urllib.error import HTTPError
@@ -137,17 +136,25 @@ class Workshop:
 
     def probe(self, label, expected):
         for attempt in range(30):
-            trace_id = secrets.token_hex(16)
-            parent_id = secrets.token_hex(8)
             status, body = request(
                 PEDIDOS + "/api/pedidos", "POST", {"producto": "teclado", "cantidad": 1},
-                {"traceparent": f"00-{trace_id}-{parent_id}-01"},
             )
             if status == expected:
-                self.save(f"request-{label}", {"utc": now(), "status": status, "body": json.loads(body), "trace_id": trace_id, "injected_parent_id": parent_id})
+                order = json.loads(body)
+                output = subprocess.check_output(["docker", "compose", "logs", "--no-color", "--tail", "1000", "pedidos"], text=True)
+                line = next(line for line in reversed(output.splitlines()) if f"Pedido {order['id']} confirmado:" in line)
+                trace_id = re.search(r"\[([0-9a-f]{32})-[0-9a-f]{16}\]", line).group(1)
+                self.save(f"request-{label}", {"utc": now(), "status": status, "body": order, "trace_id": trace_id, "confirmed_order_log": line})
                 return trace_id
             time.sleep(0.3)
         raise RuntimeError(f"No se obtuvo HTTP {expected} para {label}")
+
+    def error_trace_id(self):
+        output = subprocess.check_output(["docker", "compose", "logs", "--no-color", "--tail", "1000", "pedidos"], text=True)
+        line = next(line for line in reversed(output.splitlines()) if "ERROR" in line and "El inventario respondió 500" in line)
+        trace_id = re.search(r"\[([0-9a-f]{32})-[0-9a-f]{16}\]", line).group(1)
+        self.save("request-error", {"utc": now(), "source": "real k6 request selected from its pedidos ERROR log", "trace_id": trace_id, "error_log": line})
+        return trace_id
 
     @staticmethod
     def spans(body):
@@ -176,6 +183,10 @@ class Workshop:
                 rows = self.spans(body)
                 if len(rows) >= 3 and {row["service"] for row in rows} == {"pedidos", "inventario"}:
                     assert all(row["trace_id"] == trace_id for row in rows)
+                    ids = {row["span_id"] for row in rows}
+                    roots = [row for row in rows if not row["parent_span_id"]]
+                    assert len(roots) == 1, "Se requiere una raíz real sin padre externo ausente"
+                    assert all(not row["parent_span_id"] or row["parent_span_id"] in ids for row in rows)
                     (self.output / f"trace-{label}-otlp.json").write_text(body + "\n")
                     self.save(f"trace-{label}", {"utc": now(), "trace_id": trace_id, "spans": rows})
                     self.screenshot(f"trace-{label}", JAEGER + "/trace/" + trace_id, "inventario")
@@ -214,7 +225,7 @@ class Workshop:
         self.wait_alert("TasaDeErroresAlta", "firing")
         self.metrics("errors", screenshots=True)
         self.dashboard("dashboard-errors-firing")
-        error_id = self.probe("error", 503)
+        error_id = self.error_trace_id()
         self.trace("error", error_id)
         logs = {}
         for service in ("pedidos", "inventario"):

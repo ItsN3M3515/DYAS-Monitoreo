@@ -1,0 +1,207 @@
+[
+  {
+    "utc": "2026-11-08T23:33:53.908473Z",
+    "phase": "fault-configuration",
+    "configuration": {
+      "latenciaMs": 0,
+      "tasaError": 0.0
+    }
+  },
+  {
+    "utc": "2026-11-08T23:33:53.936554Z",
+    "phase": "fresh-stack-panel-verified",
+    "panel_id": 12
+  },
+  {
+    "utc": "2026-11-08T23:33:53.937048Z",
+    "phase": "baseline-start"
+  },
+  {
+    "utc": "2026-11-08T23:35:02.053674Z",
+    "phase": "screenshot",
+    "name": "targets-up",
+    "url": "http://localhost:9090/targets"
+  },
+  {
+    "utc": "2026-11-08T23:35:04.826603Z",
+    "phase": "screenshot",
+    "name": "query-3-baseline",
+    "url": "http://localhost:9090/query?g0.expr=sum+by+%28application%29+%28rate%28http_server_requests_seconds_count%7Buri%21~%22%2Factuator.%2A%22%7D%5B1m%5D%29%29&g0.tab=1"
+  },
+  {
+    "utc": "2026-11-08T23:35:07.574855Z",
+    "phase": "screenshot",
+    "name": "query-5-baseline",
+    "url": "http://localhost:9090/query?g0.expr=sum+by+%28application%29+%28rate%28http_server_requests_seconds_count%7Buri%21~%22%2Factuator.%2A%22%2C+status%3D~%225..%22%7D%5B1m%5D%29%29+%2F+sum+by+%28application%29+%28rate%28http_server_requests_seconds_count%7Buri%21~%22%2Factuator.%2A%22%7D%5B1m%5D%29%29&g0.tab=1"
+  },
+  {
+    "utc": "2026-11-08T23:35:10.311920Z",
+    "phase": "screenshot",
+    "name": "query-6-baseline",
+    "url": "http://localhost:9090/query?g0.expr=histogram_quantile%280.95%2C+sum+by+%28application%2C+le%29+%28rate%28http_server_requests_seconds_bucket%7Buri%21~%22%2Factuator.%2A%22%7D%5B1m%5D%29%29%29&g0.tab=1"
+  },
+  {
+    "utc": "2026-11-08T23:35:13.025896Z",
+    "phase": "screenshot",
+    "name": "query-7-baseline",
+    "url": "http://localhost:9090/query?g0.expr=sum+by+%28resultado%29+%28increase%28pedidos_total%5B5m%5D%29%29&g0.tab=1"
+  },
+  {
+    "utc": "2026-11-08T23:35:17.849791Z",
+    "phase": "screenshot",
+    "name": "dashboard-baseline",
+    "url": "http://localhost:3000/d/tienda-observabilidad/tienda-observabilidad?from=now-10m&to=now&kiosk"
+  },
+  {
+    "utc": "2026-11-08T23:35:24.941998Z",
+    "phase": "screenshot",
+    "name": "trace-normal",
+    "url": "http://localhost:16686/trace/b12ab386b33ed1209b4e3b0d9d1186ee"
+  },
+  {
+    "utc": "2026-11-08T23:35:24.947051Z",
+    "phase": "fault-configuration",
+    "configuration": {
+      "latenciaMs": 0,
+      "tasaError": 0.3
+    }
+  },
+  {
+    "utc": "2026-11-08T23:35:38.958695Z",
+    "phase": "alert-state",
+    "name": "TasaDeErroresAlta",
+    "state": "pending"
+  },
+  {
+    "utc": "2026-11-08T23:35:41.973454Z",
+    "phase": "screenshot",
+    "name": "alert-TasaDeErroresAlta-pending",
+    "url": "http://localhost:9090/alerts"
+  },
+  {
+    "utc": "2026-11-08T23:36:09.998005Z",
+    "phase": "alert-state",
+    "name": "TasaDeErroresAlta",
+    "state": "firing"
+  },
+  {
+    "utc": "2026-11-08T23:36:13.006859Z",
+    "phase": "screenshot",
+    "name": "alert-TasaDeErroresAlta-firing",
+    "url": "http://localhost:9090/alerts"
+  },
+  {
+    "utc": "2026-11-08T23:36:15.741926Z",
+    "phase": "screenshot",
+    "name": "query-3-errors",
+    "url": "http://localhost:9090/query?g0.expr=sum+by+%28application%29+%28rate%28http_server_requests_seconds_count%7Buri%21~%22%2Factuator.%2A%22%7D%5B1m%5D%29%29&g0.tab=1"
+  },
+  {
+    "utc": "2026-11-08T23:36:18.519728Z",
+    "phase": "screenshot",
+    "name": "query-5-errors",
+    "url": "http://localhost:9090/query?g0.expr=sum+by+%28application%29+%28rate%28http_server_requests_seconds_count%7Buri%21~%22%2Factuator.%2A%22%2C+status%3D~%225..%22%7D%5B1m%5D%29%29+%2F+sum+by+%28application%29+%28rate%28http_server_requests_seconds_count%7Buri%21~%22%2Factuator.%2A%22%7D%5B1m%5D%29%29&g0.tab=1"
+  },
+  {
+    "utc": "2026-11-08T23:36:21.340742Z",
+    "phase": "screenshot",
+    "name": "query-6-errors",
+    "url": "http://localhost:9090/query?g0.expr=histogram_quantile%280.95%2C+sum+by+%28application%2C+le%29+%28rate%28http_server_requests_seconds_bucket%7Buri%21~%22%2Factuator.%2A%22%7D%5B1m%5D%29%29%29&g0.tab=1"
+  },
+  {
+    "utc": "2026-11-08T23:36:24.058211Z",
+    "phase": "screenshot",
+    "name": "query-7-errors",
+    "url": "http://localhost:9090/query?g0.expr=sum+by+%28resultado%29+%28increase%28pedidos_total%5B5m%5D%29%29&g0.tab=1"
+  },
+  {
+    "utc": "2026-11-08T23:36:27.539107Z",
+    "phase": "screenshot",
+    "name": "dashboard-errors-firing",
+    "url": "http://localhost:3000/d/tienda-observabilidad/tienda-observabilidad?from=now-10m&to=now&kiosk"
+  },
+  {
+    "utc": "2026-11-08T23:36:34.491930Z",
+    "phase": "screenshot",
+    "name": "trace-error",
+    "url": "http://localhost:16686/trace/c5a8c8ae32a66fd74a32c9f4b1006845"
+  },
+  {
+    "utc": "2026-11-08T23:36:34.662624Z",
+    "phase": "fault-configuration",
+    "configuration": {
+      "latenciaMs": 800,
+      "tasaError": 0.0
+    }
+  },
+  {
+    "utc": "2026-11-08T23:36:44.672185Z",
+    "phase": "alert-state",
+    "name": "LatenciaP95Alta",
+    "state": "pending"
+  },
+  {
+    "utc": "2026-11-08T23:36:47.689805Z",
+    "phase": "screenshot",
+    "name": "alert-LatenciaP95Alta-pending",
+    "url": "http://localhost:9090/alerts"
+  },
+  {
+    "utc": "2026-11-08T23:37:13.711056Z",
+    "phase": "alert-state",
+    "name": "LatenciaP95Alta",
+    "state": "firing"
+  },
+  {
+    "utc": "2026-11-08T23:37:16.718521Z",
+    "phase": "screenshot",
+    "name": "alert-LatenciaP95Alta-firing",
+    "url": "http://localhost:9090/alerts"
+  },
+  {
+    "utc": "2026-11-08T23:37:20.249879Z",
+    "phase": "screenshot",
+    "name": "dashboard-latency-firing",
+    "url": "http://localhost:3000/d/tienda-observabilidad/tienda-observabilidad?from=now-10m&to=now&kiosk"
+  },
+  {
+    "utc": "2026-11-08T23:37:29.989926Z",
+    "phase": "screenshot",
+    "name": "trace-slow",
+    "url": "http://localhost:16686/trace/94e030b34bb9cb4fc2937bf851dbae14"
+  },
+  {
+    "utc": "2026-11-08T23:37:29.992009Z",
+    "phase": "fault-configuration",
+    "configuration": {
+      "latenciaMs": 0,
+      "tasaError": 0.0
+    }
+  },
+  {
+    "utc": "2026-11-08T23:38:32.750658Z",
+    "phase": "screenshot",
+    "name": "alerts-recovered",
+    "url": "http://localhost:9090/alerts"
+  },
+  {
+    "utc": "2026-11-08T23:38:36.243605Z",
+    "phase": "screenshot",
+    "name": "dashboard-recovered",
+    "url": "http://localhost:3000/d/tienda-observabilidad/tienda-observabilidad?from=now-10m&to=now&kiosk"
+  },
+  {
+    "utc": "2026-11-08T23:38:36.250806Z",
+    "phase": "workshop-complete",
+    "faults_reset": true,
+    "alerts_inactive": true
+  },
+  {
+    "utc": "2026-11-08T23:38:36.252686Z",
+    "phase": "fault-configuration",
+    "configuration": {
+      "latenciaMs": 0,
+      "tasaError": 0.0
+    }
+  }
+]

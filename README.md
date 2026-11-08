@@ -9,6 +9,19 @@
   propias pendientes de recuperar el Docker local. El Wiki distingue lo verificado
   de lo que todavía no se ha ejecutado.
 
+### Ejecución reproducible en un entorno aislado
+
+El workflow manual **Workshop evidence**, en la pestaña Actions, levanta este mismo
+stack en un runner nuevo de GitHub. Ejecuta k6, los escenarios de error y latencia,
+la recuperación y las capturas; publica el artefacto `workshop-evidence` y apaga el
+entorno al terminar. No usa máquinas del HomeLab. Solo se ejecuta al solicitarlo.
+
+El colector [`tools/workshop_evidence.py`](tools/workshop_evidence.py) trabaja contra
+un stack de laboratorio ya iniciado. **Introduce fallas temporales** mediante
+`/api/fallas`; no debe apuntarse a otro entorno. La ejecución guarda timestamps UTC,
+respuestas de las APIs y capturas reales. El artefacto de Actions dura siete días;
+las evidencias seleccionadas para la entrega se conservarán en el repositorio.
+
 Este taller tiene como objetivo aprender a **instrumentar una aplicación**, **recolectar sus métricas y trazas** y **visualizarlas** para entender qué está pasando en un sistema que ya está desplegado en contenedores.
 Se asume que conoces Docker y Docker Compose. En la **entrega 3 del proyecto del curso** la observabilidad es una **bonificación (+5)**: métricas de la aplicación con un tablero en Grafana ligado al SLO (latencia p95, tasa de error y *throughput*), o logs centralizados con búsqueda.
 

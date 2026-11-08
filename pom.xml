@@ -21,6 +21,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Umbral mínimo de cobertura de líneas (el mismo del taller de Integración Continua) -->
     <jacoco.cobertura.minima>0.80</jacoco.cobertura.minima>
+    <!-- JaCoCo completa esta propiedad antes de ejecutar Surefire. -->
+    <argLine/>
   </properties>
 
   <dependencies>
@@ -68,6 +70,29 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+
+      <!-- Resuelve la ubicación de Mockito sin fijar rutas de una máquina. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>ubicar-agente-mockito</id>
+            <goals>
+              <goal>properties</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Java 21+: carga Mockito al arrancar, conservando el agente de JaCoCo. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <argLine>@{argLine} -javaagent:${org.mockito:mockito-core:jar}</argLine>
+        </configuration>
       </plugin>
 
       <!-- JaCoCo: mide la cobertura y hace FALLAR el build si baja del umbral -->

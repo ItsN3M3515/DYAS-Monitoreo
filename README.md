@@ -298,6 +298,10 @@ public InventarioClienteHttp(RestClient.Builder builder, @Value("${inventario.ur
 
    Debes ver `Tests run: 47, Failures: 0`, `All coverage checks have been met.` y `BUILD SUCCESS`.
 
+   El `pom.xml` carga el agente de Mockito al iniciar la JVM de pruebas y conserva el agente
+   de JaCoCo. Así las pruebas no dependen de que Java permita conectar un agente a una JVM
+   ya iniciada. No hace falta configurar `JAVA_TOOL_OPTIONS`.
+
 3. Construye la imagen y levanta los cinco contenedores:
 
    ```sh

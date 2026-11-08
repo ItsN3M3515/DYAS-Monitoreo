@@ -1,0 +1,29 @@
+{
+  "build_finished_utc": "2026-11-08T22:57:21Z",
+  "command": "mvn -o -B verify",
+  "fresh_build_directory": true,
+  "java_major": 21,
+  "maven_version": "3.9.16",
+  "environment_workaround": false,
+  "tests": {
+    "tests": 47,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "coverage": {
+    "branch": {
+      "covered": 38,
+      "missed": 2,
+      "percent": 95.0
+    },
+    "line": {
+      "covered": 182,
+      "missed": 4,
+      "percent": 97.85
+    }
+  },
+  "minimum_line_coverage_percent": 80,
+  "build_success": true,
+  "docker_startup_verified": false
+}

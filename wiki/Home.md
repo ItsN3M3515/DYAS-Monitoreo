@@ -38,7 +38,13 @@ valores esperados que aparecen en las explicaciones tampoco son mediciones reali
 ## Lectura de la entrega
 
 - [Arquitectura del sistema](Arquitectura)
+- [Métricas y consultas PromQL](Metricas)
+- [Dashboard y panel adicional](Dashboard)
+- [Trazas distribuidas](Trazas)
+- [Alertas y recuperación](Alertas)
+- [Correlación de logs y trazas](Correlacion)
 - [Reflexión técnica](Reflexion-final)
+- [Verificación y evidencias](Verificacion)
 
 El enunciado completo y la rúbrica se conservan en el
 [README del repositorio](https://github.com/ItsN3M3515/DYAS-Monitoreo/blob/main/README.md).

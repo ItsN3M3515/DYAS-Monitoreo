@@ -132,4 +132,3 @@ seguía activo; sus cifras pueden variar ligeramente. Ambos instantes quedan reg
 ![Consulta 7: pedidos por resultado](https://raw.githubusercontent.com/ItsN3M3515/DYAS-Monitoreo/main/evidence/runtime/query-7-baseline.png)
 
 </details>
-

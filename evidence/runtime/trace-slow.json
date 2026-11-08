@@ -1,0 +1,153 @@
+{
+  "utc": "2026-11-08T23:37:27.128060Z",
+  "trace_id": "94e030b34bb9cb4fc2937bf851dbae14",
+  "spans": [
+    {
+      "service": "inventario",
+      "trace_id": "94e030b34bb9cb4fc2937bf851dbae14",
+      "span_id": "3d988590130d5aed",
+      "parent_span_id": "0aefd83b550a8f86",
+      "name": "http post /api/inventario/{producto}/reservas",
+      "duration_ms": 800.645863,
+      "status": {},
+      "attributes": [
+        {
+          "key": "exception",
+          "value": {
+            "stringValue": "none"
+          }
+        },
+        {
+          "key": "http.url",
+          "value": {
+            "stringValue": "/api/inventario/teclado/reservas"
+          }
+        },
+        {
+          "key": "method",
+          "value": {
+            "stringValue": "POST"
+          }
+        },
+        {
+          "key": "outcome",
+          "value": {
+            "stringValue": "SUCCESS"
+          }
+        },
+        {
+          "key": "status",
+          "value": {
+            "stringValue": "200"
+          }
+        },
+        {
+          "key": "uri",
+          "value": {
+            "stringValue": "/api/inventario/{producto}/reservas"
+          }
+        }
+      ]
+    },
+    {
+      "service": "pedidos",
+      "trace_id": "94e030b34bb9cb4fc2937bf851dbae14",
+      "span_id": "0aefd83b550a8f86",
+      "parent_span_id": "384894242a53e982",
+      "name": "http post",
+      "duration_ms": 801.883247,
+      "status": {},
+      "attributes": [
+        {
+          "key": "client.name",
+          "value": {
+            "stringValue": "inventario"
+          }
+        },
+        {
+          "key": "exception",
+          "value": {
+            "stringValue": "none"
+          }
+        },
+        {
+          "key": "http.url",
+          "value": {
+            "stringValue": "http://inventario:8082/api/inventario/teclado/reservas?cantidad=1"
+          }
+        },
+        {
+          "key": "method",
+          "value": {
+            "stringValue": "POST"
+          }
+        },
+        {
+          "key": "outcome",
+          "value": {
+            "stringValue": "SUCCESS"
+          }
+        },
+        {
+          "key": "status",
+          "value": {
+            "stringValue": "200"
+          }
+        },
+        {
+          "key": "uri",
+          "value": {
+            "stringValue": "/api/inventario/{producto}/reservas?cantidad={cantidad}"
+          }
+        }
+      ]
+    },
+    {
+      "service": "pedidos",
+      "trace_id": "94e030b34bb9cb4fc2937bf851dbae14",
+      "span_id": "384894242a53e982",
+      "parent_span_id": null,
+      "name": "http post /api/pedidos",
+      "duration_ms": 802.904786,
+      "status": {},
+      "attributes": [
+        {
+          "key": "exception",
+          "value": {
+            "stringValue": "none"
+          }
+        },
+        {
+          "key": "http.url",
+          "value": {
+            "stringValue": "/api/pedidos"
+          }
+        },
+        {
+          "key": "method",
+          "value": {
+            "stringValue": "POST"
+          }
+        },
+        {
+          "key": "outcome",
+          "value": {
+            "stringValue": "SUCCESS"
+          }
+        },
+        {
+          "key": "status",
+          "value": {
+            "stringValue": "201"
+          }
+        },
+        {
+          "key": "uri",
+          "value": {
+            "stringValue": "/api/pedidos"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "utc": "2026-11-08T23:37:20.164109Z",
+  "url": "http://localhost:3000/d/tienda-observabilidad/tienda-observabilidad?from=now-10m&to=now&kiosk=true&timezone=browser&refresh=5s",
+  "title": "Tienda - Observabilidad - Taller DYAS - Dashboards - Grafana",
+  "body_excerpt": "Last 10 minutes\nRefresh\n5s\nPrometheus\nJaeger\nTráfico HTTP (método RED)\nPeticiones por segundo\ninventario\npedidos\nTasa de errores 5xx\ninventario\npedidos\nLatencia p95\ninventario\npedidos\nPeticiones por endpoint y código de estado\ninventario DELETE /api/fallas 200\ninventario GET /api/inventario/{producto} 200\ninventario GET /api/inventario/{producto} 404\ninventario GET /api/inventario/{producto} 500\ninventario POST /api/fallas 200\ninventario POST /api/inventario/{producto}/reservas 200\ninventario POST /api/inventario/{producto}/reservas 404\ninventario POST /api/inventario/{producto}/reservas 409\ninventario POST /api/inventario/{producto}/reservas 500\npedidos GET /api/pedidos/{id} 200\npedidos POST /api/pedidos 201\npedidos POST /api/pedidos 404\npedidos POST /api/pedidos 409\npedidos POST /api/pedidos 503\nInventario: peticiones por endpoint\n/api/fallas\n/api/inventario/{producto}\n/api/inventario/{producto}/reservas\nMétricas de negocio (propias)\nPedidos por resultado (por minuto)\nconfirmado\nerror_inventario\nproducto_inexistente\nsin_stock\nStock del inventario\naudifonos\nmonitor\nmouse\nportatil\nteclado\nJVM (método USE)\nMemoria heap usada\ninventario\npedidos\nUso de CPU del proceso\ninventario\npedidos\nPowered by",
+  "errors": []
+}

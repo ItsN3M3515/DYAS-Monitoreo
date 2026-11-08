@@ -1,0 +1,162 @@
+{
+  "utc": "2026-11-08T23:36:31.614561Z",
+  "trace_id": "c5a8c8ae32a66fd74a32c9f4b1006845",
+  "spans": [
+    {
+      "service": "inventario",
+      "trace_id": "c5a8c8ae32a66fd74a32c9f4b1006845",
+      "span_id": "06d60fd255d1cbe0",
+      "parent_span_id": "7ce8b719f5429895",
+      "name": "http post /api/inventario/{producto}/reservas",
+      "duration_ms": 0.707546,
+      "status": {
+        "message": "Falla simulada en el servicio de inventario",
+        "code": 2
+      },
+      "attributes": [
+        {
+          "key": "exception",
+          "value": {
+            "stringValue": "FallaSimuladaException"
+          }
+        },
+        {
+          "key": "http.url",
+          "value": {
+            "stringValue": "/api/inventario/teclado/reservas"
+          }
+        },
+        {
+          "key": "method",
+          "value": {
+            "stringValue": "POST"
+          }
+        },
+        {
+          "key": "outcome",
+          "value": {
+            "stringValue": "SERVER_ERROR"
+          }
+        },
+        {
+          "key": "status",
+          "value": {
+            "stringValue": "500"
+          }
+        },
+        {
+          "key": "uri",
+          "value": {
+            "stringValue": "/api/inventario/{producto}/reservas"
+          }
+        }
+      ]
+    },
+    {
+      "service": "pedidos",
+      "trace_id": "c5a8c8ae32a66fd74a32c9f4b1006845",
+      "span_id": "941f765843d84abf",
+      "parent_span_id": null,
+      "name": "http post /api/pedidos",
+      "duration_ms": 2.981702,
+      "status": {
+        "message": "El inventario respondió 500",
+        "code": 2
+      },
+      "attributes": [
+        {
+          "key": "exception",
+          "value": {
+            "stringValue": "InventarioNoDisponibleException"
+          }
+        },
+        {
+          "key": "http.url",
+          "value": {
+            "stringValue": "/api/pedidos"
+          }
+        },
+        {
+          "key": "method",
+          "value": {
+            "stringValue": "POST"
+          }
+        },
+        {
+          "key": "outcome",
+          "value": {
+            "stringValue": "SERVER_ERROR"
+          }
+        },
+        {
+          "key": "status",
+          "value": {
+            "stringValue": "503"
+          }
+        },
+        {
+          "key": "uri",
+          "value": {
+            "stringValue": "/api/pedidos"
+          }
+        }
+      ]
+    },
+    {
+      "service": "pedidos",
+      "trace_id": "c5a8c8ae32a66fd74a32c9f4b1006845",
+      "span_id": "7ce8b719f5429895",
+      "parent_span_id": "941f765843d84abf",
+      "name": "http post",
+      "duration_ms": 1.907734,
+      "status": {
+        "message": "El inventario respondió 500",
+        "code": 2
+      },
+      "attributes": [
+        {
+          "key": "client.name",
+          "value": {
+            "stringValue": "inventario"
+          }
+        },
+        {
+          "key": "exception",
+          "value": {
+            "stringValue": "InventarioNoDisponibleException"
+          }
+        },
+        {
+          "key": "http.url",
+          "value": {
+            "stringValue": "http://inventario:8082/api/inventario/teclado/reservas?cantidad=1"
+          }
+        },
+        {
+          "key": "method",
+          "value": {
+            "stringValue": "POST"
+          }
+        },
+        {
+          "key": "outcome",
+          "value": {
+            "stringValue": "SERVER_ERROR"
+          }
+        },
+        {
+          "key": "status",
+          "value": {
+            "stringValue": "500"
+          }
+        },
+        {
+          "key": "uri",
+          "value": {
+            "stringValue": "/api/inventario/{producto}/reservas?cantidad={cantidad}"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "utc": "2026-11-08T23:36:21.342692Z",
+  "query": "sum by (resultado) (increase(pedidos_total[5m]))",
+  "response": {
+    "status": "success",
+    "data": {
+      "resultType": "vector",
+      "result": [
+        {
+          "metric": {
+            "resultado": "confirmado"
+          },
+          "value": [
+            1794180981.342,
+            "1075.0545"
+          ]
+        },
+        {
+          "metric": {
+            "resultado": "producto_inexistente"
+          },
+          "value": [
+            1794180981.342,
+            "108.0248"
+          ]
+        },
+        {
+          "metric": {
+            "resultado": "sin_stock"
+          },
+          "value": [
+            1794180981.342,
+            "102.8313"
+          ]
+        },
+        {
+          "metric": {
+            "resultado": "error_inventario"
+          },
+          "value": [
+            1794180981.342,
+            "169.57908"
+          ]
+        }
+      ]
+    }
+  }
+}

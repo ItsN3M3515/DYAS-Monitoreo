@@ -1,0 +1,30 @@
+{
+  "utc": "2026-11-08T23:36:18.525552Z",
+  "query": "histogram_quantile(0.95, sum by (application, le) (rate(http_server_requests_seconds_bucket{uri!~\"/actuator.*\"}[1m])))",
+  "response": {
+    "status": "success",
+    "data": {
+      "resultType": "vector",
+      "result": [
+        {
+          "metric": {
+            "application": "inventario"
+          },
+          "value": [
+            1794180978.522,
+            "0.0009799154251534108"
+          ]
+        },
+        {
+          "metric": {
+            "application": "pedidos"
+          },
+          "value": [
+            1794180978.522,
+            "0.003512557285280763"
+          ]
+        }
+      ]
+    }
+  }
+}

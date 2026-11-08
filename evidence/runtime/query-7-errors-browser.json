@@ -1,0 +1,7 @@
+{
+  "utc": "2026-11-08T23:36:23.979655Z",
+  "url": "http://localhost:9090/query?g0.expr=sum+by+%28resultado%29+%28increase%28pedidos_total%5B5m%5D%29%29&g0.tab=1",
+  "title": "Prometheus Time Series Collection and Processing Server",
+  "body_excerpt": "Prometheus\n\nQuery\nAlerts\nStatus\nQuery\nAlerts\nStatus\nsum by (resultado) (increase(pedidos_total[5m]))\nExecute\nTable\nGraph\nExplain\nEvaluation time\n\nLoad time: 19ms   Result series: 4\n\n{resultado=\"confirmado\"}\t1075.8455357142857\n{resultado=\"producto_inexistente\"}\t108.10428571428571\n{resultado=\"sin_stock\"}\t102.90696428571428\n{resultado=\"error_inventario\"}\t169.9065\nAdd query",
+  "errors": []
+}

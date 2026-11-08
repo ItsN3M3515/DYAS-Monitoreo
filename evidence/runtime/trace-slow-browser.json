@@ -1,0 +1,7 @@
+{
+  "utc": "2026-11-08T23:37:29.924636Z",
+  "url": "http://localhost:16686/trace/94e030b34bb9cb4fc2937bf851dbae14",
+  "title": "🎮 94e030b: http post /api/pedidos (pedidos) — Jaeger UI",
+  "body_excerpt": "Jaeger\nSearch\nCompare\nSystem Architecture\nAbout Jaeger\npedidos: http post /api/pedidos 94e030b\nTrace Timeline\nTrace StartNovember 8 2026, 23:37:20.251Duration803msServices2Depth3Total Spans3\n0μs\n201ms\n401ms\n602ms\n803ms\nService & Span Name\n0μs\n201ms\n401ms\n602ms\n803ms\n1\npedidos http post /api/pedidos\n803ms\n1\npedidos http post\n802ms\ninventario http post /api/inventario/{producto}/reservas\n801ms",
+  "errors": []
+}

@@ -1,0 +1,6 @@
+{
+  "utc": "2026-11-08T23:36:27.609594Z",
+  "source": "real k6 request selected from its pedidos ERROR log",
+  "trace_id": "c5a8c8ae32a66fd74a32c9f4b1006845",
+  "error_log": "pedidos-1  | 2026-11-08T23:36:26.986Z ERROR 1 --- [pedidos] [nio-8081-exec-1] [c5a8c8ae32a66fd74a32c9f4b1006845-941f765843d84abf] e.u.dyas.tienda.comun.ManejadorErrores   : Error al atender la solicitud: El inventario respondió 500"
+}

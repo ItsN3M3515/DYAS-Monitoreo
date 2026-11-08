@@ -1,0 +1,58 @@
+{
+  "utc": "2026-11-08T23:35:38.958445Z",
+  "rules": {
+    "TasaDeErroresAlta": {
+      "state": "pending",
+      "name": "TasaDeErroresAlta",
+      "query": "sum by (application) (rate(http_server_requests_seconds_count{status=~\"5..\",uri!~\"/actuator.*\"}[1m])) / sum by (application) (rate(http_server_requests_seconds_count{uri!~\"/actuator.*\"}[1m])) > 0.05",
+      "duration": 30,
+      "keepFiringFor": 0,
+      "labels": {
+        "severidad": "critica"
+      },
+      "annotations": {
+        "descripcion": "{{ $value | humanizePercentage }} de las peticiones terminan en error 5xx (umbral: 5%).",
+        "resumen": "El servicio {{ $labels.application }} tiene una tasa de errores 5xx alta"
+      },
+      "alerts": [
+        {
+          "labels": {
+            "alertname": "TasaDeErroresAlta",
+            "application": "inventario",
+            "severidad": "critica"
+          },
+          "annotations": {
+            "descripcion": "5.818% de las peticiones terminan en error 5xx (umbral: 5%).",
+            "resumen": "El servicio inventario tiene una tasa de errores 5xx alta"
+          },
+          "state": "pending",
+          "activeAt": "2026-11-08T23:35:38.510430208Z",
+          "value": "5.817649545201217e-02"
+        }
+      ],
+      "health": "ok",
+      "evaluationTime": 0.000634125,
+      "lastEvaluation": "2026-11-08T23:35:38.511851677Z",
+      "type": "alerting"
+    },
+    "LatenciaP95Alta": {
+      "state": "inactive",
+      "name": "LatenciaP95Alta",
+      "query": "histogram_quantile(0.95, sum by (application, le) (rate(http_server_requests_seconds_bucket{uri!~\"/actuator.*\"}[1m]))) > 0.5",
+      "duration": 30,
+      "keepFiringFor": 0,
+      "labels": {
+        "severidad": "advertencia"
+      },
+      "annotations": {
+        "descripcion": "El p95 de la latencia es {{ $value | humanizeDuration }} (umbral: 500 ms).",
+        "resumen": "El servicio {{ $labels.application }} responde lento"
+      },
+      "alerts": [],
+      "health": "ok",
+      "evaluationTime": 0.001290895,
+      "lastEvaluation": "2026-11-08T23:35:38.512490479Z",
+      "type": "alerting"
+    }
+  }
+}

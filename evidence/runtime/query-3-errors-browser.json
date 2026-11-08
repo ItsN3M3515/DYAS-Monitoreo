@@ -1,0 +1,7 @@
+{
+  "utc": "2026-11-08T23:36:15.666550Z",
+  "url": "http://localhost:9090/query?g0.expr=sum+by+%28application%29+%28rate%28http_server_requests_seconds_count%7Buri%21~%22%2Factuator.%2A%22%7D%5B1m%5D%29%29&g0.tab=1",
+  "title": "Prometheus Time Series Collection and Processing Server",
+  "body_excerpt": "Prometheus\n\nQuery\nAlerts\nStatus\nQuery\nAlerts\nStatus\nsum by (application) (rate(http_server_requests_seconds_count{uri!~\"/actuator.*\"}[1m]))\nExecute\nTable\nGraph\nExplain\nEvaluation time\n\nLoad time: 25ms   Result series: 2\n\n{application=\"inventario\"}\t19.62555393939394\n{application=\"pedidos\"}\t16.455312386363634\nAdd query",
+  "errors": []
+}

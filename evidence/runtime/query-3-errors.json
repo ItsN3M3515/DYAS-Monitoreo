@@ -1,0 +1,30 @@
+{
+  "utc": "2026-11-08T23:36:13.008965Z",
+  "query": "sum by (application) (rate(http_server_requests_seconds_count{uri!~\"/actuator.*\"}[1m]))",
+  "response": {
+    "status": "success",
+    "data": {
+      "resultType": "vector",
+      "result": [
+        {
+          "metric": {
+            "application": "inventario"
+          },
+          "value": [
+            1794180973.008,
+            "19.613500235690235"
+          ]
+        },
+        {
+          "metric": {
+            "application": "pedidos"
+          },
+          "value": [
+            1794180973.008,
+            "16.449418636363635"
+          ]
+        }
+      ]
+    }
+  }
+}

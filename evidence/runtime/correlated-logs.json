@@ -1,0 +1,12 @@
+{
+  "utc": "2026-11-08T23:36:34.660238Z",
+  "trace_id": "c5a8c8ae32a66fd74a32c9f4b1006845",
+  "logs": {
+    "pedidos": [
+      "pedidos-1  | 2026-11-08T23:36:26.986Z ERROR 1 --- [pedidos] [nio-8081-exec-1] [c5a8c8ae32a66fd74a32c9f4b1006845-941f765843d84abf] e.u.dyas.tienda.comun.ManejadorErrores   : Error al atender la solicitud: El inventario respondió 500"
+    ],
+    "inventario": [
+      "inventario-1  | 2026-11-08T23:36:26.985Z ERROR 1 --- [inventario] [nio-8082-exec-2] [c5a8c8ae32a66fd74a32c9f4b1006845-06d60fd255d1cbe0] e.u.dyas.tienda.comun.ManejadorErrores   : Error al atender la solicitud: Falla simulada en el servicio de inventario"
+    ]
+  }
+}

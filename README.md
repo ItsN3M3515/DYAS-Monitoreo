@@ -5,9 +5,11 @@
 - **Integrante:** Pablo Tamayo — pablotago@unisabana.edu.co.
 - **Wiki de la entrega:** <https://github.com/ItsN3M3515/DYAS-Monitoreo/wiki>.
 - **Copia versionada del Wiki:** [`wiki/`](wiki/).
-- **Estado:** pruebas y panel adicional preparados; ejecución del stack y evidencias
-  propias pendientes de recuperar el Docker local. El Wiki distingue lo verificado
-  de lo que todavía no se ha ejecutado.
+- **Estado:** taller ejecutado y documentado, con pruebas, stack saludable, panel
+  adicional, consultas, trazas, alertas y correlación verificadas en un runner aislado.
+- **Ejecución completa:** [Actions · run 42535601486](https://github.com/ItsN3M3515/DYAS-Monitoreo/actions/runs/42535601486).
+- **Evidencias originales:** [`evidence/`](evidence/). El diagnóstico del Docker de
+  Powerstation está documentado; no se afirma que ese host haya sido reparado.
 
 ### Ejecución reproducible en un entorno aislado
 
@@ -20,7 +22,7 @@ El colector [`tools/workshop_evidence.py`](tools/workshop_evidence.py) trabaja c
 un stack de laboratorio ya iniciado. **Introduce fallas temporales** mediante
 `/api/fallas`; no debe apuntarse a otro entorno. La ejecución guarda timestamps UTC,
 respuestas de las APIs y capturas reales. El artefacto de Actions dura siete días;
-las evidencias seleccionadas para la entrega se conservarán en el repositorio.
+las evidencias de la entrega ya están conservadas en el repositorio, con sus hashes.
 
 Este taller tiene como objetivo aprender a **instrumentar una aplicación**, **recolectar sus métricas y trazas** y **visualizarlas** para entender qué está pasando en un sistema que ya está desplegado en contenedores.
 Se asume que conoces Docker y Docker Compose. En la **entrega 3 del proyecto del curso** la observabilidad es una **bonificación (+5)**: métricas de la aplicación con un tablero en Grafana ligado al SLO (latencia p95, tasa de error y *throughput*), o logs centralizados con búsqueda.

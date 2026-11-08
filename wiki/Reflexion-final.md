@@ -1,8 +1,7 @@
 # Reflexión técnica
 
-Esta reflexión se basa en el código y en los objetivos del taller. Las observaciones
-experimentales se incorporarán después de ejecutar el stack; no se afirman resultados
-de una ejecución que todavía no ha ocurrido.
+Esta reflexión se basa en el código y en la ejecución propia del taller. Las páginas
+de resultados conservan las capturas, los JSON y los timestamps de las observaciones.
 
 ## Monitoreo y observabilidad
 
@@ -12,8 +11,10 @@ usando las señales disponibles. En este taller, una alerta podría mostrar que 
 está fallando; los logs con `traceId` y la traza permitirían averiguar si el error se
 originó en inventario y cómo llegó hasta la respuesta al cliente.
 
-La alerta es el comienzo de la investigación. Para atribuir la causa a inventario se
-necesitan las evidencias del mismo intervalo y de la misma petición.
+La alerta es el comienzo de la investigación. En la ejecución propia, la proporción
+5xx llegó a 26,27% en inventario y 15,84% en pedidos. El mismo traceId apareció en
+ambos logs y en una traza con 500 en inventario y 503 en pedidos. Así se pudo atribuir
+la causa a la dependencia usando evidencias del mismo intervalo y de la misma petición.
 
 ## Percentiles frente al promedio
 
@@ -67,3 +68,17 @@ notificaciones externas.
 La evidencia del proyecto debe demostrar que esa configuración funciona en sus propios
 flujos, con métricas y trazas reales. La preparación de este taller no demuestra por sí
 sola que la bonificación del otro proyecto ya se haya cumplido.
+
+## Lo que aportó la ejecución
+
+Con 800 ms de latencia artificial, el span de inventario midió 800,646 ms y la
+solicitud completa en pedidos 802,905 ms. La traza mostró dónde estaba la espera;
+las métricas agregadas y sus alertas mostraron su impacto en ambos servicios.
+Restablecer el simulador no hizo desaparecer inmediatamente las alertas, porque
+sus consultas aún incluían muestras anteriores en la ventana de un minuto.
+
+La verificación necesitó varias capas: una API podía devolver datos correctos y, aun
+así, una captura omitir los gráficos; tres spans con el mismo traceId podían conservar
+un padre externo ausente. Se comprobó el contenido de los canvas, se revisaron las
+imágenes y se exigió una raíz real con todos sus enlaces. Pasar una comprobación
+automática ayudó, pero no sustituyó revisar el resultado que debía ver el evaluador.

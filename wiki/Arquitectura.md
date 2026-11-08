@@ -71,6 +71,11 @@ negocio. Sus métricas HTTP siguen existiendo; las consultas del dashboard las e
 ## Límites de la verificación
 
 Las pruebas verifican lógica de negocio, respuestas HTTP simuladas, filtros de trazas
-y selección de componentes por perfil. El pipeline también construye la imagen y valida
-configuraciones. Ninguna de esas comprobaciones sustituye levantar el stack y observar
-una traza real que cruce los dos servicios.
+y selección de componentes por perfil. El pipeline CI estándar también construye la
+imagen y valida configuraciones. El workflow manual **Workshop evidence** añade otra
+capa: levanta el stack en una VM nueva y verifica solicitudes, métricas, trazas y fallas
+reales. Esa ejecución está documentada en las páginas de resultados.
+
+El entorno del runner se apaga después de recoger las evidencias. Las mediciones no
+demuestran un SLO de producción ni que Docker funcione en cualquier host: el problema
+local de Powerstation se diagnosticó por separado y no se modificó para esta entrega.

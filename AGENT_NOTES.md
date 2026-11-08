@@ -1,83 +1,104 @@
 # Contexto compartido del taller
 
-## Alcance y autorizaciones
+## Estado y alcance
 
-- El usuario pidió completar el taller, diagnosticar Docker y hacer commits pequeños
-  por cambio lógico. No se debe declarar terminada la entrega sin evidencia real.
-- Único integrante confirmado: Pablo Tamayo, pablotago@unisabana.edu.co.
-- Cuenta GitHub confirmada para fork, publicación de código y Wiki: `ItsN3M3515`.
-- `origin` apunta al fork; `upstream` conserva el repositorio del profesor.
-- El usuario autorizó una excepción al gate HomeLab **solo para diagnóstico local de
-  Docker en modo lectura**. No autorizó cambios de servicios, firewall, módulos ni reinicio.
-- El gate HomeLab no llegó a READY. El intento restringido falló por red/permisos;
-  la revisión automática rechazó ejecutarlo con acceso al host porque puede despertar Ark.
-  No intentar eludir ese rechazo. El trabajo de ejecución se trasladó a un runner aislado.
+El taller está ejecutado, con evidencia real revisada y contenido final del Wiki.
+La publicación del cierre debe comprobarse contra los hashes remotos antes de informar
+al usuario. No confundir la terminación técnica con la entrega en la plataforma del curso.
 
-## Cambios y comprobaciones
+- Usuario: único integrante Pablo Tamayo, pablotago@unisabana.edu.co.
+- Destino confirmado: `ItsN3M3515/DYAS-Monitoreo`, código y Wiki.
+- `origin` es el fork del usuario; `upstream` conserva el repositorio del profesor.
+- El usuario pidió commits por cambios lógicos, pequeños pero no por cada línea.
+- El usuario ya creó la primera página del Wiki. No volver a pedirlo.
+- El código de negocio no necesitó cambios. Se modificaron build de pruebas, dashboard,
+  automatización de evidencia y documentación.
 
-- `f4698a5`: Mockito se carga como agente de pruebas desde Maven; se preserva JaCoCo.
-- `8b29451`: noveno gráfico, panel 12, tráfico de inventario por endpoint.
-- `8b42049`: integrante, arquitectura, portada y reflexión del Wiki.
-- `86a9988`: guías de medición y resultado del build desde un directorio temporal nuevo.
-- `c200b63`: workflow manual y colector de evidencia sobre el stack real.
-- `464ec67`: corrección del significado de metadata de Grafana y del arranque de k6.
+## Autorización de host: conservar este límite
 
-La verificación desde cero con JDK 21 terminó el 8 de noviembre de 2026 a las 22:57:21
-UTC: 47 pruebas correctas; cobertura de líneas 182/186 (97,85%) y de ramas 38/40 (95%).
-El resumen está en `evidence/build-verification.json`. Una ejecución incremental había
-reutilizado clases compiladas con metadatos de líneas diferentes; no usar ese resultado
-para sustituir la medición del build nuevo.
+El usuario permitió **solo diagnóstico local de Docker en modo lectura** sin el gate
+HomeLab. No autorizó reparar servicios, modificar firewall o módulos, ni reiniciar.
+El gate no llegó a READY: su intento restringido falló por red/permisos y la revisión
+automática rechazó el retry de host porque el script puede despertar Ark. No eludir
+ese rechazo. El usuario aprobó expresamente usar la cuenta GitHub indicada arriba.
 
-CI estándar verificado en verde:
-https://github.com/ItsN3M3515/DYAS-Monitoreo/actions/runs/42532932496
+Docker local se diagnosticó el 8 de noviembre de 2026, aproximadamente a las 22:49 UTC:
+kernel `7.3.0-4-cachyos`, sin directorio de módulos para esa versión, `xt_addrtype` no
+cargado, y módulos instalados para `7.3.3-1-cachyos` y `6.18.60-2-cachyos-lts`. Docker
+falló creando NAT y llegó a `start-limit-hit`. No se modificó el host. Es evidencia
+fechada; comprobar de nuevo si se trabaja en una reparación autorizada.
 
-## Docker local: último diagnóstico, sin reparación
+## Verificación completa
 
-En la comprobación de lectura del 8 de noviembre de 2026, aproximadamente a las 22:49
-UTC, el kernel era `7.3.0-4-cachyos`, sin directorio de módulos instalado para esa
-versión. Había directorios para `7.3.3-1-cachyos` y `6.18.60-2-cachyos-lts`.
-`xt_addrtype` no estaba cargado. Docker había fallado al crear una regla NAT y systemd
-había llegado a `start-limit-hit`. Ver el detalle en `wiki/Verificacion.md`.
+- Run final: https://github.com/ItsN3M3515/DYAS-Monitoreo/actions/runs/42535601486
+- Código ejecutado: `51c225825fdd30194f073c8d889da390ace5a6d0`.
+- Ejercicios completos: 2026-11-08 23:33:53 a 23:38:36 UTC, runner aislado de GitHub.
+- Compose desde cero: pedidos, inventario, Prometheus y Grafana saludables; Jaeger running.
+- Ambos targets UP, consultas 3/5/6/7 y nueve gráficos con datos.
+- Proporción 5xx de la fase de errores: inventario 26,27%, pedidos 15,84%.
+- Traza lenta: inventario 800,646 ms; petición de pedidos 802,905 ms.
+- Trazas normal/lenta/fallida: tres spans, dos servicios, una raíz y padres completos.
+- Error correlacionado: `c5a8c8ae32a66fd74a32c9f4b1006845`; inventario 500 y pedidos 503.
+- Ambas reglas Pending/Firing/Inactive. La primera captura de errores tiene inventario
+  Firing y pedidos Pending; otra captura posterior confirma ambos Firing.
+- Simulador restablecido y ambas reglas Inactive a las 23:38:30 UTC.
+- 21 PNG originales revisados visualmente; hashes comprobados. El runner se apagó.
 
-No inferir de este diagnóstico que un reinicio ya se haya hecho ni que resolvería
-cualquier otro problema. No se modificó el host. Una reparación del host sigue
-requiriendo autorización y las instrucciones de su vault.
+El build desde un directorio nuevo con Java 21 terminó a las 22:57:21 UTC: 47 pruebas
+correctas, 97,85% de líneas y 95% de ramas. Su resumen está en
+`evidence/build-verification.json`. CI estándar también pasó, incluida imagen y promtool.
 
-## Evidencia de ejecución: tarea activa
+## Intentos anteriores y límites
 
-Primer intento aislado:
-https://github.com/ItsN3M3515/DYAS-Monitoreo/actions/runs/42533260244
+1. `42533260244`: stack correcto; colector falló por interpretar `meta.provisioned`.
+   Grafana 13.2.3 deja false con `allowUiUpdates=true`; se verificó `provisionedExternalId`
+   y contenido exacto del panel. Se corrigió además la carrera de arranque/limpieza de k6.
+2. `42533717336`: targets y APIs correctos, pero capturas blancas. Se actualizó el
+   navegador, se esperó contenido y se añadieron diagnósticos. No se aisló cuál de
+   esos cambios resolvió las primeras páginas blancas.
+3. `42534246884`: backend completo, pero la revisión visual rechazó canvas omitidos y
+   trazas con un padre externo inventado por el colector.
+4. `42535152562`: diagnóstico comparativo. Canvas con píxeles y viewport correctos,
+   con y sin GPU; full-page omitía los mismos gráficos. Se cambió a viewport 1800×1900
+   con comprobación de píxeles. Se seleccionan ahora traceId de logs reales sin padre
+   artificial. El run final verificó estas correcciones.
 
-El stack inició correctamente. El colector falló por una aserción incorrecta:
-Grafana 13.2.3 deja `meta.provisioned=false` cuando `allowUiUpdates=true`. Su implementación
-en `pkg/api/dashboard.go`, líneas 214-222, confirma que la bandera controla la edición.
-Se verifica ahora `provisionedExternalId` y el contenido del panel. Se corrigió además
-la carrera de limpieza con k6: su arranque se espera y usa `--no-deps`.
+Las reglas Prometheus no se cambiaron. k6 se detuvo deliberadamente al terminar los
+pasos; su SIGTERM y una iteración interrumpida son esperados. Reportó 2.815 iteraciones,
+7.807 solicitudes HTTP y ocho iteraciones descartadas, sin diagnóstico de su causa
+exacta. No presentar el ejercicio como benchmark de diez iteraciones/s garantizadas.
 
-Segundo intento:
-https://github.com/ItsN3M3515/DYAS-Monitoreo/actions/runs/42533717336
+## Archivos y publicación
 
-Confirmó targets UP, resultados PromQL reales y el archivo/panel aprovisionado. Falló
-al esperar la captura de Grafana; las capturas previas resultaron completamente blancas
-y no se consideran evidencia válida. El siguiente intento actualiza Playwright de
-1.56.0 a la versión publicada 1.64.1, utiliza la URL canónica devuelta por Grafana y
-guarda errores de navegador/HTML si falla el renderizado. La causa de las páginas
-blancas todavía no se ha determinado; no atribuirla al navegador sin diagnóstico.
-
-El workflow inicia una VM nueva, levanta Compose con `--wait`, genera tráfico y recoge
-datos y capturas mediante `tools/workshop_evidence.py`. Restablece las fallas y apaga
-únicamente el stack del runner al terminar. No requiere reparar Powerstation.
-
-## Publicación y continuación
-
-- Wiki: https://github.com/ItsN3M3515/DYAS-Monitoreo/wiki
-- Copia fuente de las páginas: `wiki/`. Su contenido debe mantenerse igual al Wiki.
-- El usuario ya inicializó el Wiki; no volver a pedirlo.
+- Wiki oficial: https://github.com/ItsN3M3515/DYAS-Monitoreo/wiki
+- `wiki/`: fuente versionada de las nueve páginas y sidebar; mantener igual al Wiki.
+- `evidence/runtime/`: originales del run final, incluido manifest, timeline, capturas,
+  consultas, trazas, logs correlacionados, k6 y estado Compose.
+- `evidence/README.md`: procedencia y límites; `wiki/Verificacion.md`: relato completo.
+- El artefacto de Actions dura siete días; todos los archivos del manifest están en Git.
+  El log completo adicional de Compose solo está en ese artefacto; los logs requeridos
+  y el estado del stack sí están en Git.
 - Checkout temporal del Wiki: `/tmp/dyas-monitoreo-wiki`.
-- Las páginas de ejecución todavía dicen pendiente; actualizar solo con datos observados.
-- Descargar el artefacto `workshop-evidence` del intento exitoso; comprobar resultados y
-  revisar visualmente las capturas antes de incorporarlas a `evidence/` y al Wiki.
-- Conservar en Git capturas, resultados de consultas, trazas y logs correlacionados:
-  el artefacto de Actions caduca a los siete días. No usar imágenes del profesor como propias.
-- Hacer commits separados para evidencia normal/métricas, evidencia de fallas y resultados
-  documentados; publicar el código y el Wiki y verificar los hashes remotos.
+- Pendiente de acción del usuario: revisar el Wiki y entregar los enlaces donde indique
+  el curso. No se conoce una fecha límite y no se ha enviado nada a la plataforma académica.
+- Reparar Docker de Powerstation es una tarea separada con autorización y gate propios;
+  no hace falta hacerlo para revisar las evidencias de este taller.
+
+## Historial de cambios hasta este cierre
+
+- `f4698a5`: build: load Mockito agent explicitly during tests
+- `8b29451`: dashboard: add inventory traffic breakdown by endpoint
+- `8b42049`: docs: identify participant and explain workshop architecture
+- `86a9988`: docs: prepare runtime evidence and record fresh build verification
+- `c200b63`: ci: collect workshop evidence in an isolated Docker runner
+- `464ec67`: ci: verify dashboard file provenance and wait for traffic startup
+- `e474126`: docs: explain isolated execution and preserve workshop handoff
+- `b894164`: ci: validate page rendering and retain browser diagnostics
+- `1f55392`: ci: select real root traces from application logs
+- `b5b7e7e`: ci: diagnose chart canvas pixels and compare browser rendering
+- `51c2258`: fix: capture painted dashboard charts within the viewport
+- `bdc7e11`: evidence: preserve live targets metrics and normal distributed trace
+- `3d223cf`: evidence: preserve error latency and recovery exercises
+- `65d7530`: docs: interpret measured metrics and the provisioned dashboard
+- `7f44ad1`: docs: explain connected traces alert timing and correlated errors
+- `1f45f66`: evidence: record run provenance integrity and traffic limits

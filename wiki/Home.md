@@ -17,23 +17,28 @@ se conectan las señales. La lógica de tienda sirve como escenario para el diag
 
 ## Estado verificable de la entrega
 
-Esta entrega está **en preparación**. Las pruebas de Java y las validaciones estáticas
-ya se ejecutaron. La ejecución de Docker y las evidencias de Prometheus, Grafana y Jaeger
-están pendientes: el Docker local falla al iniciar su red, en un entorno cuyo kernel en
-ejecución no tiene instalado su directorio de módulos correspondiente.
+Esta entrega está **ejecutada y documentada**. El [run completo 42535601486](https://github.com/ItsN3M3515/DYAS-Monitoreo/actions/runs/42535601486)
+levantó el stack desde cero en una VM aislada de GitHub, generó tráfico, verificó las
+consultas y trazas, provocó fallas, observó las alertas y comprobó la recuperación.
+Los ejercicios se realizaron el 8 de noviembre de 2026, aproximadamente entre las
+**18:33:53 y 18:38:36 Bogotá (23:33:53 a 23:38:36 UTC)**.
 
-No se presentan las imágenes de ejemplo del profesor como resultados propios. Los
-valores esperados que aparecen en las explicaciones tampoco son mediciones realizadas.
+El Docker de Powerstation tenía un problema de kernel/módulos y no fue reparado:
+la ejecución aislada permite verificar el repositorio sin modificar ese host. Las
+mediciones corresponden al runner, no al rendimiento de Powerstation ni a producción.
+
+No se presentan las imágenes de ejemplo del profesor como resultados propios.
+Las tablas de resultados distinguen mediciones propias de los ejemplos explicativos.
 
 | Elemento | Estado |
 |---|---|
-| Fork e identificación del integrante | Preparados |
+| Fork e identificación del integrante | Confirmados |
 | Pruebas y cobertura | 47 pruebas correctas; umbral de cobertura superado |
-| Panel adicional versionado | Implementado; visualización en vivo pendiente |
-| Arquitectura y reflexión técnica | Redactadas a partir del código y la guía |
-| Stack, consultas y capturas propias | Pendientes de ejecución |
-| Trazas normales, lentas y con error | Pendientes de ejecución |
-| Ciclo de alertas y correlación | Pendientes de ejecución |
+| Panel adicional versionado | Cargado desde `tienda.json` en una instancia nueva; nueve gráficos con datos |
+| Arquitectura y reflexión técnica | Documentadas y conectadas con los resultados |
+| Stack, consultas y capturas propias | Stack saludable, dos targets UP, consultas 3/5/6/7 y capturas originales |
+| Trazas normales, lentas y con error | Tres spans de dos servicios, una raíz real y cadena de padres completa |
+| Ciclo de alertas y correlación | Ambas reglas Pending/Firing/Inactive; logs de los dos servicios con el mismo traceId |
 
 ## Lectura de la entrega
 
@@ -48,5 +53,5 @@ valores esperados que aparecen en las explicaciones tampoco son mediciones reali
 
 El enunciado completo y la rúbrica se conservan en el
 [README del repositorio](https://github.com/ItsN3M3515/DYAS-Monitoreo/blob/main/README.md).
-La documentación oficial del taller se publicará en este Wiki; los archivos de `wiki/`
+La documentación oficial del taller se publica en este Wiki; los archivos de `wiki/`
 del repositorio mantienen una copia versionada de su contenido.

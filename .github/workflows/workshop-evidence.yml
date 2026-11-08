@@ -3,6 +3,11 @@ name: Workshop evidence
 # Entorno de prueba aislado: no utiliza Powerstation ni otros hosts del HomeLab.
 on:
   workflow_dispatch:
+    inputs:
+      render_only:
+        description: Diagnosticar solo el renderizado (no completa el taller)
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -23,7 +28,14 @@ jobs:
       - name: Levantar el stack desde cero
         run: docker compose up -d --build --wait --wait-timeout 180
       - name: Ejecutar ejercicios y recopilar evidencias reales
-        run: python tools/workshop_evidence.py --output evidence/runtime
+        env:
+          RENDER_ONLY: ${{ inputs.render_only }}
+        run: |
+          if [ "$RENDER_ONLY" = "true" ]; then
+            python tools/workshop_evidence.py --output evidence/runtime --render-only
+          else
+            python tools/workshop_evidence.py --output evidence/runtime
+          fi
       - name: Conservar diagnóstico del stack
         if: always()
         run: |

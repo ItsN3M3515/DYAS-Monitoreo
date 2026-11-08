@@ -64,6 +64,7 @@ class Workshop:
         self.browser_errors = []
         page.on("pageerror", lambda error: self.browser_errors.append(str(error)))
         page.on("requestfailed", lambda req: self.browser_errors.append(f"{req.url}: {req.failure}"))
+        page.on("console", lambda msg: self.browser_errors.append(f"console {msg.type}: {msg.text}") if msg.type in ("error", "warning") else None)
         output.mkdir(parents=True, exist_ok=True)
 
     def save(self, name, value):
@@ -99,6 +100,30 @@ class Workshop:
         # Usar la ruta canónica de Grafana, incluidos UID y slug.
         metadata = get_json(GRAFANA + "/api/dashboards/uid/tienda-observabilidad")["meta"]
         self.screenshot(name, GRAFANA + metadata["url"] + "?from=now-10m&to=now&kiosk", "Inventario: peticiones por endpoint")
+
+    def canvas_diagnostics(self, name):
+        result = self.page.evaluate("""() => ({
+          userAgent: navigator.userAgent, devicePixelRatio: window.devicePixelRatio,
+          visibility: document.visibilityState, focused: document.hasFocus(),
+          canvases: Array.from(document.querySelectorAll('canvas')).map(canvas => {
+            const bounds = canvas.getBoundingClientRect();
+            const result = {width:canvas.width, height:canvas.height,
+              bounds:{x:bounds.x,y:bounds.y,width:bounds.width,height:bounds.height},
+              display:getComputedStyle(canvas).display};
+            try {
+              const ctx = canvas.getContext('2d');
+              if (!ctx) return {...result,context:'not 2d'};
+              const pixels = ctx.getImageData(0,0,canvas.width,canvas.height).data;
+              let nonTransparent = 0;
+              for (let i=3;i<pixels.length;i+=4) if (pixels[i]) nonTransparent++;
+              return {...result,nonTransparent};
+            } catch (error) {return {...result,error:String(error)};}
+          })})""")
+        self.save(name + "-canvas", result)
+        self.page.screenshot(path=str(self.output / f"{name}-viewport.png"), full_page=False)
+        canvases = self.page.locator("canvas")
+        if canvases.count():
+            canvases.first.screenshot(path=str(self.output / f"{name}-canvas.png"))
 
     def faults(self, query=""):
         method = "POST" if query else "DELETE"
@@ -263,6 +288,7 @@ class Workshop:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=Path("evidence/runtime"))
+    parser.add_argument("--render-only", action="store_true", help="Compara canvas y capturas, sin declarar completado el taller")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     with (args.output / "k6.log").open("w") as traffic_log, sync_playwright() as playwright:
@@ -274,7 +300,21 @@ def main():
         subprocess.run(["docker", "compose", "run", "-d", "--no-deps", "--rm", "--name", "dyas-workshop-k6", "-e", "DURACION=12m", "k6"], check=True)
         traffic = subprocess.Popen(["docker", "logs", "--follow", "dyas-workshop-k6"], stdout=traffic_log, stderr=subprocess.STDOUT)
         try:
-            workshop.run()
+            if args.render_only:
+                workshop.faults()
+                for _ in range(13):
+                    time.sleep(5)
+                workshop.dashboard("dashboard-default")
+                workshop.canvas_diagnostics("default")
+                cpu_browser = playwright.chromium.launch(args=["--disable-gpu", "--disable-dev-shm-usage"])
+                try:
+                    cpu = Workshop(args.output / "cpu", cpu_browser.new_page(viewport={"width":1800,"height":1400}))
+                    cpu.dashboard("dashboard-cpu")
+                    cpu.canvas_diagnostics("cpu")
+                finally:
+                    cpu_browser.close()
+            else:
+                workshop.run()
         finally:
             # Siempre restablece el simulador, incluso si falla una captura o aserción.
             try:
@@ -288,7 +328,7 @@ def main():
                     traffic.wait(timeout=10)
                 browser.close()
     files = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(args.output.iterdir()) if p.is_file()}
-    workshop.save("manifest", {"utc": now(), "environment": "GitHub-hosted isolated runner" if os.getenv("GITHUB_ACTIONS") else "local laboratory", "repository": os.getenv("GITHUB_REPOSITORY"), "run_id": os.getenv("GITHUB_RUN_ID"), "source_commit": os.getenv("GITHUB_SHA"), "complete": True, "files_sha256": files})
+    workshop.save("manifest", {"utc": now(), "environment": "GitHub-hosted isolated runner" if os.getenv("GITHUB_ACTIONS") else "local laboratory", "repository": os.getenv("GITHUB_REPOSITORY"), "run_id": os.getenv("GITHUB_RUN_ID"), "source_commit": os.getenv("GITHUB_SHA"), "mode": "render-diagnostic" if args.render_only else "full-workshop", "complete": not args.render_only, "files_sha256": files})
 
 
 if __name__ == "__main__":

@@ -12,7 +12,7 @@
     "to": "now"
   },
   "schemaVersion": 41,
-  "version": 1,
+  "version": 2,
   "editable": true,
   "graphTooltip": 1,
   "annotations": {
@@ -284,13 +284,63 @@
       ]
     },
     {
+      "id": 12,
+      "type": "timeseries",
+      "title": "Inventario: peticiones por endpoint",
+      "description": "Panel adicional del taller: peticiones por segundo de cada ruta del inventario. Permite distinguir consultas de stock, reservas y configuración del simulador; excluye /actuator.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 17,
+        "w": 24,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum by (uri) (rate(http_server_requests_seconds_count{application=\"inventario\", uri!~\"/actuator.*\"}[1m]))",
+          "legendFormat": "{{uri}}",
+          "range": true
+        }
+      ]
+    },
+    {
       "id": 6,
       "type": "row",
       "title": "Métricas de negocio (propias)",
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 17,
+        "y": 25,
         "w": 24,
         "h": 1
       },
@@ -307,7 +357,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 18,
+        "y": 26,
         "w": 12,
         "h": 8
       },
@@ -357,7 +407,7 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 18,
+        "y": 26,
         "w": 12,
         "h": 8
       },
@@ -403,7 +453,7 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 26,
+        "y": 34,
         "w": 24,
         "h": 1
       },
@@ -420,7 +470,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 27,
+        "y": 35,
         "w": 12,
         "h": 8
       },
@@ -470,7 +520,7 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 27,
+        "y": 35,
         "w": 12,
         "h": 8
       },

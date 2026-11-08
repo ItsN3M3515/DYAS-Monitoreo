@@ -16,7 +16,7 @@ import re
 import secrets
 import subprocess
 import time
-from urllib.error import HTTPError, URLError
+from urllib.error import HTTPError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
@@ -169,13 +169,18 @@ class Workshop:
     def run(self):
         self.faults()
         dashboard = get_json(GRAFANA + "/api/dashboards/uid/tienda-observabilidad")
+        self.save("dashboard-provisioned", dashboard)
         panel = next(p for p in dashboard["dashboard"]["panels"] if p["id"] == 12)
         assert panel["title"] == "Inventario: peticiones por endpoint"
-        assert dashboard["meta"]["provisioned"]
-        self.save("dashboard-provisioned", dashboard)
+        # Con allowUiUpdates=true, Grafana deja meta.provisioned en false:
+        # ese indicador controla la edición. El ID externo identifica el archivo.
+        assert dashboard["meta"].get("provisionedExternalId", "").endswith("tienda.json"), dashboard["meta"]
+        source = json.loads(Path("grafana/dashboards/tienda.json").read_text())
+        assert panel["targets"] == next(p for p in source["panels"] if p["id"] == 12)["targets"]
         self.event("fresh-stack-panel-verified", panel_id=12)
         self.event("baseline-start")
-        time.sleep(65)
+        for _ in range(13):
+            time.sleep(5)
         targets = get_json(PROM + "/api/v1/targets")
         shop = [t for t in targets["data"]["activeTargets"] if t["labels"].get("job") == "tienda"]
         assert len(shop) == 2 and all(t["health"] == "up" for t in shop)
@@ -236,7 +241,10 @@ def main():
         browser = playwright.chromium.launch()
         page = browser.new_page(viewport={"width": 1800, "height": 1400}, device_scale_factor=1)
         workshop = Workshop(args.output, page)
-        traffic = subprocess.Popen(["docker", "compose", "run", "--rm", "--name", "dyas-workshop-k6", "-e", "DURACION=12m", "k6"], stdout=traffic_log, stderr=subprocess.STDOUT)
+        # Esperar a que exista el contenedor evita la carrera entre pull, arranque y
+        # limpieza. --no-deps conserva los procesos ya verificados por Compose.
+        subprocess.run(["docker", "compose", "run", "-d", "--no-deps", "--rm", "--name", "dyas-workshop-k6", "-e", "DURACION=12m", "k6"], check=True)
+        traffic = subprocess.Popen(["docker", "logs", "--follow", "dyas-workshop-k6"], stdout=traffic_log, stderr=subprocess.STDOUT)
         try:
             workshop.run()
         finally:
@@ -245,7 +253,11 @@ def main():
                 workshop.faults()
             finally:
                 subprocess.run(["docker", "stop", "dyas-workshop-k6"], check=False, stdout=subprocess.DEVNULL)
-                traffic.wait(timeout=30)
+                try:
+                    traffic.wait(timeout=15)
+                except subprocess.TimeoutExpired:
+                    traffic.terminate()
+                    traffic.wait(timeout=10)
                 browser.close()
     files = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(args.output.iterdir()) if p.is_file()}
     workshop.save("manifest", {"utc": now(), "environment": "GitHub-hosted isolated runner" if os.getenv("GITHUB_ACTIONS") else "local laboratory", "repository": os.getenv("GITHUB_REPOSITORY"), "run_id": os.getenv("GITHUB_RUN_ID"), "source_commit": os.getenv("GITHUB_SHA"), "complete": True, "files_sha256": files})

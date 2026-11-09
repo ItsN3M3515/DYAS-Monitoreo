@@ -30,15 +30,32 @@ mediciones corresponden al runner, no al rendimiento de Powerstation ni a produc
 No se presentan las imágenes de ejemplo del profesor como resultados propios.
 Las tablas de resultados distinguen mediciones propias de los ejemplos explicativos.
 
-| Elemento | Estado |
+| Criterio de la rúbrica | Resultado y evidencia |
 |---|---|
-| Fork e identificación del integrante | Confirmados |
-| Pruebas y cobertura | 47 pruebas correctas; umbral de cobertura superado |
-| Panel adicional versionado | Cargado desde `tienda.json` en una instancia nueva; nueve gráficos con datos |
-| Arquitectura y reflexión técnica | Documentadas y conectadas con los resultados |
-| Stack, consultas y capturas propias | Stack saludable, dos targets UP, consultas 3/5/6/7 y capturas originales |
-| Trazas normales, lentas y con error | Tres spans de dos servicios, una raíz real y cadena de padres completa |
-| Ciclo de alertas y correlación | Ambas reglas Pending/Firing/Inactive; logs de los dos servicios con el mismo traceId |
+| Repositorio y stack | Fork e integrante identificados; 47 pruebas correctas, cobertura de líneas 97,85% y arranque desde cero: [verificación](Verificacion) |
+| Métricas y PromQL | Dos targets UP; consultas 3/5/6/7 con resultados originales e interpretación: [métricas](Metricas) |
+| Dashboard en Grafana | Nueve gráficos con datos; panel adicional versionado y cargado desde `tienda.json` en una instancia nueva: [dashboard](Dashboard) |
+| Trazas distribuidas | Trazas normal y lenta de ambos servicios; inventario explica la demora de 800 ms: [trazas](Trazas) |
+| Alertas | Ambas reglas Pending/Firing/Inactive, dashboard durante la falla y recuperación después del reset: [alertas](Alertas) |
+| Correlación de logs y trazas | Logs ERROR de ambos servicios y traza con el mismo traceId, relacionados con las métricas: [correlación](Correlacion) |
+| Documentación en Wiki | Secciones completas, diagrama propio y capturas originales: [arquitectura](Arquitectura) y páginas de este índice |
+| Reflexión técnica | Las cinco preguntas del enunciado, con resultados propios y aplicación al Proyecto 3: [reflexión](Reflexion-final) |
+
+## Enlaces para entregar
+
+La entrega oficial es este Wiki; el README no exige PDF. Estos enlaces identifican el
+trabajo y pueden copiarse en la actividad del curso:
+
+```text
+Taller de Monitoreo y Observabilidad
+Integrante: Pablo Tamayo — pablotago@unisabana.edu.co
+Repositorio: https://github.com/ItsN3M3515/DYAS-Monitoreo
+Wiki (documentación y evidencias): https://github.com/ItsN3M3515/DYAS-Monitoreo/wiki
+Ejecución completa: https://github.com/ItsN3M3515/DYAS-Monitoreo/actions/runs/42535601486
+```
+
+La publicación en GitHub conserva el trabajo; el envío a la actividad académica se
+realiza por separado en la plataforma indicada por el curso.
 
 ## Lectura de la entrega
 

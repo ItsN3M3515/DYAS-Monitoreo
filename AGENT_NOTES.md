@@ -79,8 +79,16 @@ exacta. No presentar el ejercicio como benchmark de diez iteraciones/s garantiza
   El log completo adicional de Compose solo está en ese artefacto; los logs requeridos
   y el estado del stack sí están en Git.
 - Checkout temporal del Wiki: `/tmp/dyas-monitoreo-wiki`.
-- Pendiente de acción del usuario: revisar el Wiki y entregar los enlaces donde indique
-  el curso. No se conoce una fecha límite y no se ha enviado nada a la plataforma académica.
+- El usuario confirmó que la entrega vence hoy, **8 de noviembre de 2026 en Bogotá**;
+  no indicó la hora límite. Priorizar el cierre académico; no desviar a reparación de host.
+- La nota anterior decía «No se conoce una fecha límite» porque aún no se había indicado.
+  Queda sustituida por la confirmación anterior; falta únicamente conocer la hora exacta.
+- El código publicado `7e72351` pasó ambos jobs de CI en el run `42537040346`.
+  Se comprobó la integridad de las evidencias y la igualdad de las páginas locales
+  con el checkout publicado del Wiki. Home incluye un índice de los ocho criterios
+  de la rúbrica y texto con los enlaces listos para entregar.
+- No se ha enviado nada a la plataforma académica: el repositorio no contiene su URL.
+  Se solicitó al usuario el enlace exacto de la actividad mientras se completa el cierre.
 - Reparar Docker de Powerstation es una tarea separada con autorización y gate propios;
   no hace falta hacerlo para revisar las evidencias de este taller.
 
@@ -102,3 +110,4 @@ exacta. No presentar el ejercicio como benchmark de diez iteraciones/s garantiza
 - `65d7530`: docs: interpret measured metrics and the provisioned dashboard
 - `7f44ad1`: docs: explain connected traces alert timing and correlated errors
 - `1f45f66`: evidence: record run provenance integrity and traffic limits
+- `7e72351`: docs: publish final workshop index and verification handoff
